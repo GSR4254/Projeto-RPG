@@ -24,6 +24,7 @@
             var inputI = 0;
             var inputA = 0;
             var i;
+            var ordem = [];
             function encontro()
             {
                 document.getElementById('inimigos').innerHTML ='';
@@ -58,9 +59,9 @@
                 var vidaInimigos = [];
                 var aliados = [];
                 var resultadosAliados = [];
-                var vidaAliados = [];
-                var ordem = [];
-                for(i=0;i<inputI;i++)
+                var vidaAliados = []; 
+                ordem = [];        
+                       for(i=0;i<inputI;i++)
                 {
                     inimigos.push(document.getElementById(`inimigo${i}`).value);
                     bonusInimigos.push(document.getElementById(`incInimigo${i}`).value);
@@ -74,20 +75,47 @@
                 }
                 for(i=0;i<inimigos.length;i++)
                 {
-                    ordem.push({resultado : parseInt(bonusInimigos[i]) + (Math.floor(Math.random() *(20 - 1 + 1)) + 1), nome: inimigos [i], vida: vidaInimigos[i]});
+                    ordem.push({resultado : parseInt(bonusInimigos[i]) + (Math.floor(Math.random() *(20 - 1 + 1)) + 1), nome: inimigos [i], vida: vidaInimigos[i], vidaMax: vidaInimigos[i]});
                 }
                 for(i=0;i<aliados.length;i++)
                 {
-                    ordem.push({resultado : resultadosAliados[i], nome:  aliados[i], vida: vidaAliados[i]});
+                    ordem.push({resultado : resultadosAliados[i], nome:  aliados[i], vida: vidaAliados[i], vidaMax : vidaAliados[i]});
                 }
                 ordem.sort(function(a, b){return b.resultado - a.resultado});
                 for(i=0;i<ordem.length;i++)
                 {
                     objeto = ordem[i];
-                    document.getElementById('ordem').innerHTML += `${i+1}º / ${objeto['resultado']} / ${objeto['nome']} / ${objeto['vida']} <input> <br>`;
+                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button><br>`;
                 }
             }
-            
+            function dano(i)
+            {
+                objeto = ordem[i];
+                objeto['vida'] -= parseInt(document.getElementById(`vida${i}`).value);
+                document.getElementById('ordem').innerHTML ='';
+                document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+                for(i=0;i<ordem.length;i++)
+                {
+                    objeto = ordem[i];
+                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button><br>`;
+                }
+            }
+            function cura(i)
+            {
+                objeto = ordem[i];
+                objeto['vida'] += parseInt(document.getElementById(`vida${i}`).value);
+                if(objeto['vida'] > objeto['vidaMax'])
+                {
+                    objeto['vida'] = objeto['vidaMax'];
+                }
+                document.getElementById('ordem').innerHTML ='';
+                document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+                for(i=0;i<ordem.length;i++)
+                {
+                    objeto = ordem[i];
+                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button><br>`;
+                }
+            }
             var input = document.getElementById("qdAliados");
             input.addEventListener("keyup", function(event) {
                 event.preventDefault();

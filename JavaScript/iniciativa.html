@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Iniciativa</title>
+    </head>
+    <body>
+        <h1>Iniciatava</h1><br>
+        Quantidade inimigos<input id='qdInimigos' type='number'><br>
+        Quantidade de Aliados<input id='qdAliados' type='number'><br>
+        <button onclick="iniciativa()" id='iniciativa'>Iniciativa</button><br>
+        <h3>------Grupo Inimigo------</h3><br>
+        <div id='inimigos'> 
+
+        </div><br>
+        <h3>------Grupo Aliado------</h3><br>
+        <div id='aliados'>
+
+        </div><br>
+        <h3>------Ordem------</h3><br>
+        <div id='ordem'>
+
+        </div>
+        <script>
+            var inputI = 0;
+            var inputA = 0;
+            var i;
+            function iniciativa()
+            {
+                document.getElementById('inimigos').innerHTML ='';
+                document.getElementById('aliados').innerHTML = '';
+                inputI = parseInt(document.getElementById('qdInimigos').value);
+                inputA = parseInt(document.getElementById('qdAliados').value);
+                for(i=0;i<inputI;i++)
+                {
+                    document.getElementById('inimigos').innerHTML += `Inimigo ${i+1}: <input id='inimigo${i}' type='text'> Iniciativa: <input id='incInimigo${i}' type='number'><br>`;
+                }
+                for(i=0;i<inputA;i++)
+                {
+                    document.getElementById('aliados').innerHTML += `Aliado ${i+1}: <input id='aliado${i}' type='text'> Iniciativa: <input id='incAliado${i}' type='number'><br>`;
+                }
+                document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+            }
+            function rolagem()
+            {
+                document.getElementById('ordem').innerHTML ='';
+                var inimigos = [];
+                var bonusInimigos = [];
+                var aliados = [];
+                var resultadosAliados = [];
+                var ordem = [];
+                for(i=0;i<inputI;i++)
+                {
+                    inimigos.push(document.getElementById(`inimigo${i}`).value);
+                    bonusInimigos.push(document.getElementById(`incInimigo${i}`).value);
+                }
+                for(i=0;i<inputA;i++)
+                {
+                    aliados.push(document.getElementById(`aliado${i}`).value);
+                    resultadosAliados.push(document.getElementById(`incAliado${i}`).value);
+                }
+                for(i=0;i<inimigos.length;i++)
+                {
+                    ordem.push({resultado : parseInt(bonusInimigos[i]) + (Math.floor(Math.random() *(20 - 1 + 1)) + 1), nome: inimigos [i]});
+                }
+                for(i=0;i<aliados.length;i++)
+                {
+                    ordem.push({resultado : resultadosAliados[i], nome:  aliados[i]});
+                }
+                ordem.sort(function(a, b){return b.resultado - a.resultado});
+                for(i=0;i<ordem.length;i++)
+                {
+                    objeto = ordem[i]
+                    document.getElementById('ordem').innerHTML += `${i+1}º ${objeto['resultado']}  ${objeto['nome']}<br>`;
+                }
+            }
+            
+            var input = document.getElementById("qdAliados");
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) 
+                {
+                    document.getElementById("iniciativa").click();
+                }
+            });
+            var input = document.getElementById("qdInimigos");
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) 
+                {
+                    document.getElementById("iniciativa").click();
+                }
+            });
+        </script>
+    </body>
+</html>

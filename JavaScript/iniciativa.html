@@ -75,11 +75,11 @@
                 }
                 for(i=0;i<inimigos.length;i++)
                 {
-                    ordem.push({resultado : parseInt(bonusInimigos[i]) + (Math.floor(Math.random() *(20 - 1 + 1)) + 1), nome: inimigos [i], vida: vidaInimigos[i], vidaMax: vidaInimigos[i]});
+                    ordem.push({resultado : parseInt(bonusInimigos[i]) + (Math.floor(Math.random() *(20 - 1 + 1)) + 1), nome: inimigos [i], vida: vidaInimigos[i], vidaMax: vidaInimigos[i], tipo : 'inimigo'});
                 }
                 for(i=0;i<aliados.length;i++)
                 {
-                    ordem.push({resultado : resultadosAliados[i], nome:  aliados[i], vida: vidaAliados[i], vidaMax : vidaAliados[i]});
+                    ordem.push({resultado : resultadosAliados[i], nome:  aliados[i], vida: vidaAliados[i], vidaMax : vidaAliados[i], tipo: 'aliado' });
                 }
                 ordem.sort(function(a, b){return b.resultado - a.resultado});
                 for(i=0;i<ordem.length;i++)
@@ -94,6 +94,14 @@
                 objeto['vida'] -= parseInt(document.getElementById(`vida${i}`).value);
                 document.getElementById('ordem').innerHTML ='';
                 document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+                if(objeto['vida'] <= 0 && objeto['tipo'] == 'inimigo')
+                {
+                    ordem.splice(i,1);
+                }
+                if(objeto['vida'] <= 0)
+                {
+                    objeto['vida'] = 0;
+                }
                 for(i=0;i<ordem.length;i++)
                 {
                     objeto = ordem[i];

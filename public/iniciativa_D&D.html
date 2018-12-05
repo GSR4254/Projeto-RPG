@@ -1,0 +1,146 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Iniciativa</title>
+    </head>
+    <body>
+        <h1>Iniciatava D&D</h1>
+        <a href="index.html">Voltar</a><br>
+        Quantidade Inimigos<input id='qdInimigos' type='number'><br>
+        Quantidade de Aliados<input id='qdAliados' type='number'><br>
+        <button onclick="encontro()" id='encontro'>Encontro</button><button onclick="nEncontro()" id='nEncontro'>Novo Encontro</button> <br>
+        <h3>------Grupo Inimigo------</h3><br>
+        <div id='inimigos'> 
+
+        </div><br>
+        <h3>------Grupo Aliado------</h3><br>
+        <div id='aliados'>
+
+        </div><br>
+        <h3>------Ordem------</h3><br>
+        <div id='ordem'>
+
+        </div>
+        <script>
+            var inputI = 0;
+            var inputA = 0;
+            var i;
+            var ordem = [];
+            function encontro()
+            {
+                document.getElementById('inimigos').innerHTML ='';
+                document.getElementById('aliados').innerHTML = '';
+                inputI = parseInt(document.getElementById('qdInimigos').value);
+                inputA = parseInt(document.getElementById('qdAliados').value);
+                for(i=0;i<inputI;i++)
+                {
+                    document.getElementById('inimigos').innerHTML += `Inimigo ${i+1}: <input id='inimigo${i}' type='text'> Iniciativa: <input id='incInimigo${i}' type='number'> Vida maxima: <input id='vidaInimigo${i}' type='number'><br>`;
+                }
+                for(i=0;i<inputA;i++)
+                {
+                    document.getElementById('aliados').innerHTML += `Aliado ${i+1}: <input id='aliado${i}' type='text'> Iniciativa: <input id='incAliado${i}' type='number'> Vida maxima: <input id='vidaAliado${i}' type='number'><br>`;
+                }
+                document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+            }
+            function nEncontro()
+            {
+                document.getElementById('inimigos').innerHTML ='';
+                inputI = parseInt(document.getElementById('qdInimigos').value);
+                for(i=0;i<inputI;i++)
+                {
+                    document.getElementById('inimigos').innerHTML += `Inimigo ${i+1}: <input id='inimigo${i}' type='text'> Iniciativa: <input id='incInimigo${i}' type='number'> Vida maxima: <input id='vidaInimigo${i}' type='number'><br>`;
+                }
+            }
+            function rolagem()
+            {
+                document.getElementById('ordem').innerHTML ='';
+                document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+                var inimigos = [];
+                var bonusInimigos = [];
+                var vidaInimigos = [];
+                var aliados = [];
+                var resultadosAliados = [];
+                var vidaAliados = []; 
+                ordem = [];        
+                       for(i=0;i<inputI;i++)
+                {
+                    inimigos.push(document.getElementById(`inimigo${i}`).value);
+                    bonusInimigos.push(document.getElementById(`incInimigo${i}`).value);
+                    vidaInimigos.push(document.getElementById(`vidaInimigo${i}`).value);
+                }
+                for(i=0;i<inputA;i++)
+                {
+                    aliados.push(document.getElementById(`aliado${i}`).value);
+                    resultadosAliados.push(document.getElementById(`incAliado${i}`).value);
+                    vidaAliados.push(document.getElementById(`vidaAliado${i}`).value);
+                }
+                for(i=0;i<inimigos.length;i++)
+                {
+                    ordem.push({resultado : parseInt(bonusInimigos[i]) + (Math.floor(Math.random() *(20 - 1 + 1)) + 1), nome: inimigos [i], vida: vidaInimigos[i], vidaMax: vidaInimigos[i], tipo : 'inimigo'});
+                }
+                for(i=0;i<aliados.length;i++)
+                {
+                    ordem.push({resultado : resultadosAliados[i], nome:  aliados[i], vida: vidaAliados[i], vidaMax : vidaAliados[i], tipo: 'aliado' });
+                }
+                ordem.sort(function(a, b){return b.resultado - a.resultado});
+                for(i=0;i<ordem.length;i++)
+                {
+                    objeto = ordem[i];
+                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button><br>`;
+                }
+            }
+            function dano(i)
+            {
+                objeto = ordem[i];
+                objeto['vida'] -= parseInt(document.getElementById(`vida${i}`).value);
+                document.getElementById('ordem').innerHTML ='';
+                document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+                if(objeto['vida'] <= 0 && objeto['tipo'] == 'inimigo')
+                {
+                    ordem.splice(i,1);
+                }
+                if(objeto['vida'] <= 0)
+                {
+                    objeto['vida'] = 0;
+                }
+                for(i=0;i<ordem.length;i++)
+                {
+                    objeto = ordem[i];
+                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button><br>`;
+                }
+            }
+            function cura(i)
+            {
+                objeto = ordem[i];
+                objeto['vida'] += parseInt(document.getElementById(`vida${i}`).value);
+                if(objeto['vida'] > objeto['vidaMax'])
+                {
+                    objeto['vida'] = objeto['vidaMax'];
+                }
+                document.getElementById('ordem').innerHTML ='';
+                document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
+                for(i=0;i<ordem.length;i++)
+                {
+                    objeto = ordem[i];
+                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button><br>`;
+                }
+            }
+            var input = document.getElementById("qdAliados");
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) 
+                {
+                    document.getElementById("encontro").click();
+                }
+            });
+            var input = document.getElementById("qdInimigos");
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) 
+                {
+                    document.getElementById("encontro").click();
+                }
+            });
+        </script>
+    </body>
+</html>

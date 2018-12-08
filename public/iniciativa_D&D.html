@@ -125,8 +125,14 @@
             }
             function dano(i)
             {
+                var perda;
                 objeto = ordem[i];
-                objeto['vida'] -= parseInt(document.getElementById(`vida${i}`).value);
+                perda = parseInt(document.getElementById(`vida${i}`).value);
+                if(perda == "" || isNaN(perda))
+                {
+                    return;
+                }
+                objeto['vida'] -= perda;
                 document.getElementById('ordem').innerHTML ='';
                 document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
                 if(objeto['vida'] <= 0 && objeto['tipo'] == 'inimigo')
@@ -145,8 +151,14 @@
             }
             function cura(i)
             {
+                var ganho;
                 objeto = ordem[i];
-                objeto['vida'] += parseInt(document.getElementById(`vida${i}`).value);
+                ganho = parseInt(document.getElementById(`vida${i}`).value);
+                if(ganho == '' || isNaN(ganho))
+                {
+                    return;
+                }
+                objeto['vida'] += ganho;
                 if(objeto['vida'] > objeto['vidaMax'])
                 {
                     objeto['vida'] = objeto['vidaMax'];

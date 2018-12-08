@@ -105,8 +105,14 @@
 
             function dano(i)
             {
+                var perda;
                 objeto = ordem[i];
-                objeto['vida'] -= parseInt(document.getElementById(`vida${i}`).value);
+                perda = parseInt(document.getElementById(`vida${i}`).value);
+                if(perda == '' || isNaN(perda))
+                {
+                    return;
+                }
+                objeto['vida'] -= perda;
                 document.getElementById('ordem').innerHTML ='';
                 document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
                 if(objeto['vida'] <= 0 && objeto['tipo'] == 'inimigo')
@@ -127,8 +133,14 @@
 
             function cura(i)
             {
+                var ganho;
                 objeto = ordem[i];
-                objeto['vida'] += parseInt(document.getElementById(`vida${i}`).value);
+                ganho = parseInt(document.getElementById(`vida${i}`).value);
+                if(ganho == '' || isNaN(ganho))
+                {
+                    return;
+                }
+                objeto['vida'] += ganho;
                 if(objeto['vida'] > objeto['vidaMax'])
                 {
                     objeto['vida'] = objeto['vidaMax'];
@@ -138,15 +150,21 @@
                 for(i=0;i<ordem.length;i++)
                 {
                     objeto = ordem[i];
-                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button><br>`;
+                    document.getElementById('ordem').innerHTML += `${i+1}º -- ${objeto['resultado']} -- ${objeto['nome']} -- ${objeto['vida']} /${objeto['vidaMax']}<input id='vida${i}'> <button onclick='dano(${i})'>Dano</button> <button onclick='cura(${i})'>Cura</button> ${objeto['mana']} /${objeto['manaMax']}<input id='mana${i}'> <button onclick='gasta(${i})'>Usar mana</button> <button onclick='ganha(${i})'>Ganhar mana</button> <br>`;
                 }
             }
 
             
             function gasta(i)
             {
+                var perda;
                 objeto = ordem[i];
-                objeto['mana'] -= parseInt(document.getElementById(`mana${i}`).value);
+                perda = parseInt(document.getElementById(`mana${i}`).value);
+                if(perda == '' || isNaN(perda))
+                {
+                    return;
+                }
+                objeto['mana'] -= perda;
                 document.getElementById('ordem').innerHTML ='';
                 document.getElementById('ordem').innerHTML = "<button onclick='rolagem()'>Rolar</button><br>";
                 if(objeto['mana'] <= 0)
@@ -163,8 +181,14 @@
 
             function ganha(i)
             {
+                var ganho;
                 objeto = ordem[i];
-                objeto['mana'] += parseInt(document.getElementById(`mana${i}`).value);
+                ganho = parseInt(document.getElementById(`mana${i}`).value);
+                if(ganho == '' || isNaN(ganho))
+                {
+                    return;
+                }
+                objeto['mana'] += ganho;
                 if(objeto['mana'] > objeto['manaMax'])
                 {
                     objeto['mana'] = objeto['manaMax'];

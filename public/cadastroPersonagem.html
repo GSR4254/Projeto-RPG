@@ -6,14 +6,49 @@
     <body>
 
         <h1>Cadastro personagem</h1>
+<<<<<<< HEAD
         <form action='cadastroDeD.js' method="POST">
 
 
         </form>
+=======
+        <form method="POST" action="cadastro.php">
+            <label>nomeP:</label><input type="text" name="nomeP" id="nomeP"><br>
+            <label>Vidamax:</label><input type="number" name="Vidamax" id="Vidamax"><br>
+            <label>AC:</label><input type="number" name="AC" id="AC"><br>
+            <label>Srt:</label><input type="number" name="Srt" id="Srt"><br>
+            <label>Dex:</label><input type="number" name="Dex" id="Dex"><br>
+            <label>Con:</label><input type="number" name="Con" id="Con"><br>
+            <label>Inte:</label><input type="number" name="Inte" id="Inte"><br>
+            <label>Wis:</label><input type="number" name="Wis" id="Wis"><br>
+            <label>Cha:</label><input type="number" name="Cha" id="Cha"><br>
+            <label>LVL:</label><input type="number" name="LVL" id="LVL"><br>
+            <label>Notas:</label><input type="text" name="Notas" id="Notas"><br>
+            <label>aventura:</label><input type="number" name="aventura" id="aventura"><br>
+            <input type="submit" value="Cadastrar" id="cadastrar" name="cadastrar">
+            </form>
+>>>>>>> 3fa3123589dec08c70294f992771931816eb94f6
         <script>
-            
-            
-            
+    <? php
+    $nomeP = ($_POST['nomeP']);
+    $Vidamax = ($_POST['Vidamax']);
+    $AC = ($_POST['AC']);
+    $Srt = ($_POST['Srt']);
+    $Dex = ($_POST['Dex']);
+    $Con = ($_POST['Con']);
+    $Inte = ($_POST['Inte']);
+    $Wis = ($_POST['Wis']);
+    $Cha = ($_POST['Cha']);
+    $LVL = ($_POST['LVL']);
+    $Notas = ($_POST['Notas']);
+    $aventura = ($_POST['aventura']);
+    $connect = mysql_connect('LOCALHOST','','');
+    $db = mysql_select_db('RPG');
+    $select = mysql_query($query_select,$connect);
+    $array = mysql_fetch_array($select);
+    $query = "INSERT INTO usuarios (nomeP,Vidamax,AC,Str,Dex,Con,Inte,Wis,Cha,LVL,Notas,aventura) VALUES ('$nomeP','$Vidamax','$AC','$Str','$Dex','$Con','$Inte','$Wis','$Cha','$LVL','$Notas','$aventura')";
+    $insert = mysql_query($query,$connect);
+ ?>
         </script>
     </body>
 </html>
